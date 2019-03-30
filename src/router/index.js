@@ -11,9 +11,10 @@ Vue.use(VueRouter);
 export default new VueRouter({
   routes: [{
     path:'/',
-    redirect: Home
+    redirect: {name: 'home'}
   },{
     path: '/home',
+    name: 'home',
     component: Home
   },{
     path: '/Order',
@@ -24,5 +25,7 @@ export default new VueRouter({
   },{
     path: '/personal',
     component: Personal
-  }]
+  }],
+  // 使用mui-active类名样式替换router-link-active
+  linkActiveClass: 'mui-active'
 })
