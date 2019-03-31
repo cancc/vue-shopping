@@ -5,6 +5,7 @@ import Order from '../pages/Order/Order.vue';
 import Search from '../pages/Search/Search.vue';
 import Personal from '../pages/Personal/Personal.vue';
 import NewList from '../pages/newList/newList.vue';
+import NewInfo from '../pages/newList/newInfo.vue'
 
 
 Vue.use(VueRouter);
@@ -26,9 +27,12 @@ export default new VueRouter({
   },{
     path: '/personal',
     component: Personal
-  },{
+  },{// 新闻列表
     path: '/home/newList',
     component: NewList
+  },{ // 新闻详情
+    path: '/home/newInfo/:id',
+    component: NewInfo
   }],
   // 使用mui-active类名样式替换router-link-active
   linkActiveClass: 'mui-active'

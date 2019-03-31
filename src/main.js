@@ -8,11 +8,14 @@ import '../static/mui/css/icons-extra.css'
 import {
   Header,
   Swipe,
-  SwipeItem
+  SwipeItem,
+  button
 } from 'mint-ui';
 Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(button.name, button);
+
 
 // 时间过滤器
 import Moment from 'moment'

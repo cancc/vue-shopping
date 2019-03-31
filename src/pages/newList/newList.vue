@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="wrapper">
     <ul class="mui-table-view" v-for="(item, index) in NewList" :key="index">
 				<li class="mui-table-view-cell mui-media">
-					<router-link to="/home/newlist/13">
+					<router-link :to="'/home/newinfo/'+item.id">
 						<img class="mui-media-object mui-pull-left" :src="item.img_url">
 						<div class="mui-media-body">
 							{{item.title}}
@@ -14,12 +14,14 @@
 					</router-link>
 				</li>
 			</ul>
+      <div></div>
   </div>
 </template>
 
 <script type="${text/ecmascript-6}">
 import Axios from "axios";
 import { Toast } from "mint-ui";
+
 
   export default {
     data() {
@@ -28,7 +30,8 @@ import { Toast } from "mint-ui";
       }
     },
     created() {
-      this.getNewList()
+      this.getNewList();
+     
     },
     methods: {
       getNewList() {
