@@ -13,9 +13,12 @@ import {
 Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
-// 引入axios
-// import Axios from 'axios'
-// Vue.use(Axios)
+
+// 时间过滤器
+import Moment from 'moment'
+Vue.filter('dateFormat', function(dataStr, pattern="YYYY-MM-DD HH:mm:ss"){
+  return Moment(dataStr).format(pattern)
+})
 
 
 
