@@ -1,53 +1,58 @@
 <template>
-  <div class="goodslist">
-    <div class="goods-item">
-      <img src="../../assets/logo.png" alt="">
-      <h1 class="title">这是描述信息这是描述信息这是描述信息这是描述信息</h1>
+  <div class="goodslist" >
+    <div class="goods-item" v-for="(item,index) in goodsList" :key="item.id">
+      <img :src="item.img_url" alt="">
+      <h1 class="title">{{item.title}}</h1>
       <p class="price">
-        <span class="new">￥1999</span>
-        <span class="old">￥2999</span>
+        <span class="new">￥{{item.sell_price}}</span>
+        <span class="old">{{item.market_price}}</span>
       </p>
       <p class="sell">
         <span>热卖中</span>
-        <span>已售123件</span>
+        <span>已售{{item.stock_quantity}}件</span>
       </p>
     </div>
-    <div class="goods-item">
-      <img src="../../assets/logo.png" alt="">
-      <h1 class="title">信息这是描述信息这是描信息这是描信息这是描述信息这是描述信息</h1>
-      <p class="price">
-        <span class="new">￥1999</span>
-        <span class="old">￥2999</span>
-      </p>
-      <p class="sell">
-        <span>热卖中</span>
-        <span>已售123件</span>
-      </p>
-    </div>
-    <div class="goods-item">
-      <img src="../../assets/logo.png" alt="">
-      <h1 class="title">这述信息这是描述信息这是描述信息这是描述信息</h1>
-      <p class="price">
-        <span class="new">￥1999</span>
-        <span class="old">￥2999</span>
-      </p>
-      <p class="sell">
-        <span>热卖中</span>
-        <span>已售123件</span>
-      </p>
-    </div>
+    <mt-button type="danger" plain size="large" @click="goodsMore">加载更多</mt-button>
   </div>
 </template>
 
 <script type="${text/ecmascript-6}">
+import Axios from 'axios'
+import { Toast, Indicator } from "mint-ui";
 export default {
   data() {
-    return {};
+    return {
+      goodsList: [], // 返回的商品数据
+      pageindex: 1, // 分页
+    };
+  },
+  created() {
+    this.getGoodsList()
   },
   mounted() {
+    
   },
   methods: {
-    
+    getGoodsList() {
+      Axios.get(`http://www.liulongbin.top:3005/api/getgoods?pageindex=${this.pageindex}`)
+        .then(res => {
+          if(res.data.status === 0) {
+            let data = res.data.message
+            if(data.length === 0) {
+              Toast("没有更多数据");
+              return;
+            }
+            data.map(item => {
+              return this.goodsList.push(item)
+            })
+            console.log(this.goodsList)
+          }
+        })
+    },
+    goodsMore() {
+      this.pageindex++
+      this.getGoodsList()
+    }
   }
 };
 </script>
@@ -55,7 +60,7 @@ export default {
 <style lang="stylus" scoped>
 .goodslist {
   width 100%
-  padding 0 10px
+  padding 0 10px 10px 10px
   display flex
   flex-wrap: wrap
   justify-content space-between
