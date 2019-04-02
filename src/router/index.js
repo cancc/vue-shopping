@@ -5,7 +5,10 @@ import Order from '../pages/Order/Order.vue';
 import Search from '../pages/Search/Search.vue';
 import Personal from '../pages/Personal/Personal.vue';
 import NewList from '../pages/newList/newList.vue';
-import NewInfo from '../pages/newList/newInfo.vue'
+import NewInfo from '../pages/newList/newInfo.vue';
+import GoodsList from '../pages/goods/goodslist.vue'
+
+
 
 
 Vue.use(VueRouter);
@@ -33,6 +36,9 @@ export default new VueRouter({
   },{ // 新闻详情
     path: '/home/newInfo/:id',
     component: NewInfo
+  },{ // 图片分享
+    path: '/home/goods',
+    component: GoodsList,
   }],
   // 使用mui-active类名样式替换router-link-active
   linkActiveClass: 'mui-active'

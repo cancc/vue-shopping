@@ -1,14 +1,17 @@
 <template>
   <div class="newInfo">
     <h1 class="title">{{newInfo.title}}</h1>
-    <div class="title_header">
+    <div class="title_header" v-show="flag">
       <span class="date">{{newInfo.add_time | dateFormat}}</span>
       <span>点击次数: {{newInfo.click}}</span>
     </div>
     <div v-html="newInfo.content">
     </div>
     <!-- 评论区域 -->
-    <comment></comment>
+    <div v-show="flag">
+      <comment></comment>
+    </div>
+    
     <!-- newInfo -- {{$route.params.id}} -->
   </div>
 </template>
@@ -16,12 +19,15 @@
 <script type="${text/ecmascript-6}">
 import Axios from "axios";
 import Comment from '../comment/comment'
+import { Toast,Indicator } from "mint-ui";
+
 
 export default {
   data() {
     return {
       newid: this.$route.params.id,
-      newInfo: {}
+      newInfo: {},
+      flag: false,
     };
   },
   created() {
@@ -30,13 +36,19 @@ export default {
   },
   methods: {
     getNewInfo() {
+      Indicator.open("加载中...");
       Axios.get(`http://www.liulongbin.top:3005/api/getnew/${this.newid}`)
         .then(res => {
           if(res.data.status === 0) {
             this.newInfo = res.data.message[0]
-            console.log(this.newInfo)
+            this.flag = true
+            // console.log(this.newInfo)
+            Indicator.close();
           }else {
-
+            Toast({
+            message: "轮播图获取失败",
+            duration: 1000
+          });
           }
         });
     }

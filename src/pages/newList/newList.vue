@@ -20,7 +20,7 @@
 
 <script type="${text/ecmascript-6}">
 import Axios from "axios";
-import { Toast } from "mint-ui";
+import { Toast,Indicator } from "mint-ui";
 
 
   export default {
@@ -31,15 +31,15 @@ import { Toast } from "mint-ui";
     },
     created() {
       this.getNewList();
-     
     },
     methods: {
       getNewList() {
+        Indicator.open("加载中...");
         Axios.get("http://www.liulongbin.top:3005/api/getnewslist").then(res => {
           if(res.data.status === 0) {
             this.NewList = res.data.message
             console.log(this.NewList)
-            
+            Indicator.close();
           }else {
             Toast({
             message: "轮播图获取失败",

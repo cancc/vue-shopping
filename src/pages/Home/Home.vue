@@ -15,10 +15,10 @@
         </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/goods">
           <img src="../../assets/images/menu2.png" alt="">
-          <div class="mui-media-body">Email</div>
-        </a>
+          <div class="mui-media-body">商品购买</div>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <a href="#">
@@ -51,7 +51,7 @@
 
 <script>
 import Axios from "axios";
-import { Toast } from "mint-ui";
+import { Toast,Indicator } from "mint-ui";
 
 export default {
   data() {
@@ -63,16 +63,14 @@ export default {
     this.getLoop();
   },
   methods: {
-    getLoop() {
+    getLoop() { // 轮播图
+      Indicator.open("图片加载中...");
       Axios.get("http://www.liulongbin.top:3005/api/getlunbo").then(res => {
         if (res.data.status === 0) {
           // console.log(res.data)
           this.loopPicture = res.data.message;
           console.log(this.loopPicture);
-          Toast({
-            message: "轮播图获取成功",
-            duration: 1000
-          });
+          Indicator.close();
         } else {
           Toast("轮播图获取失败");
         }

@@ -18,14 +18,14 @@
 
 <script type="${text/ecmascript-6}">
 import Axios from "axios";
-import { Toast } from "mint-ui";
+import { Toast, Indicator } from "mint-ui";
 export default {
   data() {
     return {
       id: this.$route.params.id, // 路由传递的id
       cmtlist: [], // 评论列表
       pageindex: 1, // 评论页码
-      pushcmt: "",  // 发表评论
+      pushcmt: "" // 发表评论
     };
   },
   created() {
@@ -34,8 +34,11 @@ export default {
   methods: {
     getComment() {
       //获取评论内容
+      
       Axios.get(
-        `http://www.liulongbin.top:3005/api/getcomments/${this.id}?pageindex=${this.pageindex}`
+        `http://www.liulongbin.top:3005/api/getcomments/${this.id}?pageindex=${
+          this.pageindex
+        }`
       ).then(res => {
         if (res.data.status === 0) {
           let message = res.data.message;
@@ -44,31 +47,36 @@ export default {
           });
           // this.cmtlist = res.data.message;
           console.log(this.cmtlist);
+          Indicator.close();
         }
+        
       });
     },
-    cmtMore() {
-      // 加载更多
+    cmtMore() { // 加载更多
+     Indicator.open("加载中...");
       this.pageindex = this.pageindex + 1;
       this.getComment();
+      
     },
     pushCmt() {
       if (this.pushcmt) {
-        Axios.post(// 提交评论信息
+        Indicator.open('正在上传评论...');
+        Axios.post(
+          // 提交评论信息
           `http://www.liulongbin.top:3005/api/postcomment/${this.id}`,
           {
             content: this.pushcmt
           }
         ).then(res => {
           if (res.data.status === 0) {
-            this.cmtlist = []
-            this.pageindex = 1
-            this.getComment()
-            this.pushcmt = ''
+            this.cmtlist = [];
+            this.pageindex = 1;
+            this.getComment();
+            this.pushcmt = "";
           }
         });
-      }else {
-        Toast('评论不能为空')
+      } else {
+        Toast("评论不能为空");
       }
     }
   }
