@@ -4,7 +4,7 @@
       @before-enter="beforeEnter"
       @enter="enter"
       @after-enter="afterEnter">
-      <div class="ball" v-show="ballFlag"></div>
+      <div class="ball" ref="ball" v-show="ballFlag"></div>
     </transition>
     <!-- 轮播图区域 -->
     <mt-swipe :auto="4000">
@@ -21,14 +21,7 @@
         <span class="new-desc">销售价:</span>
         <span class="new-price">￥{{goodsInfo.sell_price}}</span>
       </p>
-      <p class="number">
-        <span>购买数量:</span>
-        <span class="mui-numbox" id="num" >
-          <button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-          <input class="mui-input-numbox" type="number" value="0">
-          <button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-        </span>
-      </p>
+      <num-box :maxgoods="goodsInfo.stock_quantity" @getNum="getSelectNum"></num-box>
       <p>
         <span>
           <button type="button" class="mui-btn mui-btn-royal">立即购买</button>
@@ -63,13 +56,12 @@
     <mt-button type="primary" plain size="large" @click="goDesc(goodsId)">图文详情</mt-button>
     <br>
     <mt-button type="danger" plain size="large" @click="goContent(goodsId)">商品评论</mt-button>
-
   </div>
 </template>
 
 <script type="${text/ecmascript-6}">
 import Axios from "axios";
-import mui from "../../../static/mui/js/mui.min.js";
+import NumBox from '../numbox/numBox'
 
 export default {
   data() {
@@ -79,15 +71,16 @@ export default {
       goodsInfo: {},
       goodsDetail: {},　
       ballFlag: false, //小球是否显示
+      goodsNum: 1, // 接收numBox 子组件传递的购买数量的值
+      goodsSelect: {}, // 把要加入购物车的商品自定义需要的属性
     };
   },
   created() {
     this.getLoopImg()
     this.getGoodsInfo()
+  
   },
-  mounted() {
-    this.getNumber()
-  },
+  
   methods: {
     getLoopImg() {// 获取轮播图数据
       Axios.get(
@@ -110,15 +103,6 @@ export default {
         }
       });
     },
-    getNumber() {
-      // 获取购买数量
-      mui("#num")
-        .numbox()
-        .getValue();
-    },
-    setNumber() {
-      // 设置购买数量
-    },
     goDesc(id) {
       this.$router.push({
         name: 'goodsdesc',
@@ -130,19 +114,42 @@ export default {
     },
     goShoppingCar() { // 购物车
       this.ballFlag = !this.ballFlag
+      this.goodsSelect = {
+        "id": this.goodsId,
+        "price": this.goodsInfo.sell_price,
+        "count": parseInt(this.goodsNum),
+        "selectFlag": true
+      }
+      this.$store.commit("addCar", this.goodsSelect)
+      
     },
     beforeEnter(el) {
       el.style.transform = "translate(0,0)"
     },
     enter(el,done) {
       el.offsetWidth
-      el.style.transform = "translate(100px,216px)"
+
+      let ballX = this.$refs.ball.getBoundingClientRect().left
+      let carX = document.getElementById('car').getBoundingClientRect().left   
+      let ballY = this.$refs.ball.getBoundingClientRect().top
+      let carY = document.getElementById('car').getBoundingClientRect().top   
+      let XX = carX - ballX
+      let YY = carY - ballY
+
+      el.style.transform = `translate(${XX}px,${YY}px)`
       el.style.transition = "all .6s cubic-bezier(.4,-0.3,1,.68)"
       done()
     },
     afterEnter(el) {
       this.ballFlag = !this.ballFlag
+    },
+    getSelectNum(num) {
+      this.goodsNum = parseInt(num)
+      console.log(`这是接受的值${this.goodsNum}`)
     }
+  },
+  components: {
+    NumBox
   }
 };
 </script>
@@ -204,10 +211,7 @@ export default {
       }
     }
 
-    .number {
-      font-size: 14px;
-      color: black;
-    }
+    
   }
   .goods-desc {
     padding: 0 20px
