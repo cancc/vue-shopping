@@ -9,39 +9,17 @@ import {
   Header,
   Swipe,
   SwipeItem,
-  button
+  button,
+  Switch
 } from 'mint-ui';
 Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
 Vue.component(button.name, button);
+Vue.component(Switch.name, Switch);
 
-// 引入vuex
-import Vuex from 'vuex'
-Vue.use(Vuex)
-const store = new Vuex.Store({
-  state: {
-    car: [], // 购物车
-  },
-  mutations: {
-    
-    addCar(state, data) { // 添加到购物车数据
-      let sameId = false // 没有一样的id
-      state.car.some(item => {
-        if(item.id === data.id) {
-          item.count += parseInt(data.count)
-          sameId = true
-          return true;
-        }
-      })
-      if(sameId === false) {
-        state.car.push(data)
-      }
-    }
-    
-  }
-})
-// import store from './store/index'
+// vuex状态管理
+import store from './store/index'
 
 // 时间过滤器
 import Moment from 'moment'

@@ -2,12 +2,11 @@
   <p class="number">
         <span>购买数量:</span>
         <span class="mui-numbox" id="num" data-numbox-min='1' >
-          <button class="mui-btn mui-btn-numbox-minus" ref="subtract" type="button">-</button>
+          <button class="mui-btn mui-btn-numbox-minus"  type="button">-</button>
           <input class="mui-input-numbox" type="number" value="1"
            ref="numInput" @change="numBoxChange">
           <button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
         </span>
-        {{$store.state.numBox}}
   </p>
 </template>
 

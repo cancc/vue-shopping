@@ -65,13 +65,13 @@ export default {
   methods: {
     getLoop() {
       // 轮播图
-      Indicator.open("图片加载中...");
+      // Indicator.open("图片加载中...");
       Axios.get("http://www.liulongbin.top:3005/api/getlunbo").then(res => {
         if (res.data.status === 0) {
           // console.log(res.data)
           this.loopPicture = res.data.message;
           console.log(this.loopPicture);
-          Indicator.close();
+          // Indicator.close();
         } else {
           Toast("轮播图获取失败");
         }

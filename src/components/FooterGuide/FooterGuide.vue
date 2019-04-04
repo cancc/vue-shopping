@@ -10,7 +10,7 @@
 				<span class="mui-tab-label">搜索</span>
 			</router-link>
       <router-link class="my-tab-item" to="/order" >
-				<span class="mui-icon mui-icon-extra mui-icon-extra-cart "><span class="mui-badge" id="car">0</span></span>
+				<span class="mui-icon mui-icon-extra mui-icon-extra-cart "><span class="mui-badge" id="car">{{$store.getters.getCarTotal}}</span></span>
 				<span class="mui-tab-label">购物车</span>
 			</router-link>
 			<router-link class="my-tab-item" to="/personal">
